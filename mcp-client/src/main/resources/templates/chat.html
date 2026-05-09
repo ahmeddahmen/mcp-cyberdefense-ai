@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat IA</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>💬 Envoyer un message à l'IA</h2>
+<form action="/chat/send" method="post">
+    <label for="message">Message :</label>
+    <input type="text" id="message" name="message" required>
+    <button type="submit">Envoyer</button>
+</form>
+
+<hr>
+<h3 th:text="${response}"></h3>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card shadow-sm border-0">
+
+        <!-- Header -->
+        <div class="card-header bg-dark text-white d-flex align-items-center gap-2">
+          <i class="bi bi-shield-lock-fill text-success fs-4"></i>
+          <div>
+            <h5 class="mb-0">CyberDefense AI Agent</h5>
+            <small class="text-secondary">Powered by LLaMA 3.3 · MCP Network & Log Tools</small>
+          </div>
+          <span class="ms-auto badge bg-success">
+            <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i>Online
+          </span>
+        </div>
+
+        <!-- Quick action buttons -->
+        <div class="bg-dark border-bottom border-secondary px-3 py-2 d-flex flex-wrap gap-2">
+          <button class="btn btn-sm btn-outline-success" (click)="sendQuick('Analyse les logs SSH et détecte les tentatives de force brute')">
+            <i class="bi bi-search me-1"></i>Analyse Logs SSH
+          </button>
+          <button class="btn btn-sm btn-outline-warning" (click)="sendQuick('Scanne les ports de localhost et liste les ports ouverts')">
+            <i class="bi bi-wifi me-1"></i>Scan Ports
+          </button>
+          <button class="btn btn-sm btn-outline-info" (click)="sendQuick('Y a-t-il des connexions réseau suspectes actives sur cette machine ?')">
+            <i class="bi bi-diagram-3 me-1"></i>Connexions Suspectes
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="sendQuick('Génère un rapport de sécurité résumant l\'état actuel du système')">
+            <i class="bi bi-file-earmark-text me-1"></i>Rapport Sécurité
+          </button>
+        </div>
+
+        <!-- Messages -->
+        <div class="card-body p-0 bg-dark">
+          <div class="chat-container p-3" #chatContainer>
+            <div
+              *ngFor="let message of messages"
+              class="message mb-3"
+              [ngClass]="message.isUser ? 'user-message' : 'ai-message'">
+
+              <div class="d-flex align-items-start gap-2" [ngClass]="message.isUser ? 'flex-row-reverse' : ''">
+                <!-- Avatar -->
+                <div class="avatar flex-shrink-0">
+                  <i *ngIf="message.isUser" class="bi bi-person-circle text-primary fs-4"></i>
+                  <i *ngIf="!message.isUser" class="bi bi-shield-lock-fill text-success fs-4"></i>
+                </div>
+
+                <!-- Bubble -->
+                <div class="message-bubble" [ngClass]="message.isUser ? 'user-bubble' : 'ai-bubble'">
+                  <span *ngIf="message.isUser">{{ message.content }}</span>
+                  <div *ngIf="!message.isUser" [innerHTML]="parseMarkdown(message.content)"></div>
+                  <div class="message-time text-end mt-1">
+                    <small class="opacity-50">{{ message.timestamp | date:'HH:mm' }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Typing indicator -->
+            <div *ngIf="isTyping" class="d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-shield-lock-fill text-success fs-4"></i>
+              <div class="ai-bubble typing-bubble">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="card-footer bg-dark border-top border-secondary">
+          <form (ngSubmit)="sendMessage()" class="d-flex gap-2">
+            <textarea
+              [(ngModel)]="newMessage"
+              name="messageInput"
+              class="form-control bg-secondary text-white border-0 message-input"
+              rows="2"
+              placeholder="Ex: Analyse les logs SSH, scanne les ports de 192.168.1.1..."
+              (keydown)="onKeyDown($event)"
+              [disabled]="isLoading"
+              required></textarea>
+            <button
+              type="submit"
+              class="btn btn-success px-3"
+              [disabled]="isLoading || !newMessage.trim()">
+              <i class="bi" [ngClass]="isLoading ? 'bi-hourglass-split' : 'bi-send-fill'"></i>
+            </button>
+          </form>
+          <small class="text-secondary mt-1 d-block">
+            <i class="bi bi-info-circle me-1"></i>
+            Shift+Enter pour nouvelle ligne · Enter pour envoyer
+          </small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

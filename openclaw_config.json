@@ -1,0 +1,22 @@
+{
+  "llm": {
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "base_url": "https://api.groq.com/openai/v1",
+    "api_key": "${GROQ_API_KEY}"
+  },
+  "mcp_servers": [
+    {
+      "name": "network",
+      "command": "python",
+      "args": ["mcp-servers/network_server.py"],
+      "description": "Serveur MCP de surveillance réseau (scan ports, connexions, ping, stats)"
+    },
+    {
+      "name": "logs",
+      "command": "python",
+      "args": ["mcp-servers/log_server.py"],
+      "description": "Serveur MCP d'analyse de logs (auth logs, brute force, failed logins)"
+    }
+  ]
+}

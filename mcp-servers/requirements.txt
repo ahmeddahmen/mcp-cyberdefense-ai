@@ -1,0 +1,4 @@
+mcp[cli]
+fastmcp
+psutil
+requests

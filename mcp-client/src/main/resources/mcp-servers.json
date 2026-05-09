@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "network-security": {
+      "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "args": [
+        "C:\\Users\\Administrator\\Desktop\\mcp-agentic-ai-main\\mcp-servers\\network_server.py"
+      ]
+    },
+    "log-security": {
+      "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "args": [
+        "C:\\Users\\Administrator\\Desktop\\mcp-agentic-ai-main\\mcp-servers\\log_server.py"
+      ]
+    }
+  }
+}

@@ -1,0 +1,100 @@
+/* ===== Chat Container ===== */
+.chat-container {
+  height: 500px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  background-color: #1a1a2e;
+}
+
+/* ===== Message Bubbles ===== */
+.message-bubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.user-bubble {
+  background-color: #0d6efd;
+  color: #fff;
+  border-bottom-right-radius: 2px;
+}
+
+.ai-bubble {
+  background-color: #16213e;
+  color: #e0e0e0;
+  border: 1px solid #0f3460;
+  border-bottom-left-radius: 2px;
+}
+
+/* ===== Markdown inside AI bubble ===== */
+.ai-bubble p { margin-bottom: 0.4rem; }
+.ai-bubble ul, .ai-bubble ol { padding-left: 1.2rem; margin-bottom: 0.4rem; }
+.ai-bubble code {
+  background: #0f3460;
+  color: #4ade80;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+.ai-bubble pre {
+  background: #0f3460;
+  color: #4ade80;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+}
+.ai-bubble strong { color: #4ade80; }
+.ai-bubble h1, .ai-bubble h2, .ai-bubble h3 {
+  color: #4ade80;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* ===== Typing indicator ===== */
+.typing-bubble {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  min-width: 60px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* ===== Input ===== */
+.message-input {
+  resize: none;
+  font-size: 0.9rem;
+}
+
+.message-input::placeholder { color: #aaa; }
+.message-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #4ade8055;
+}
+
+/* ===== Scrollbar ===== */
+.chat-container::-webkit-scrollbar { width: 5px; }
+.chat-container::-webkit-scrollbar-track { background: #1a1a2e; }
+.chat-container::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 4px; }
+
+/* ===== Card ===== */
+.card { border-radius: 12px; overflow: hidden; }

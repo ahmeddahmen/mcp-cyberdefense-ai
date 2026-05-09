@@ -1,0 +1,72 @@
+### 1. Connexion SSE (Stream de messages serveur)
+GET http://{{host}}:{{port}}/sse
+
+### 2. Initialisation (Phase d'initialisation)
+POST http://{{host}}:{{port}}/mcp/message?sessionId={{sessionId}}
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-07-17",
+    "capabilities": {
+      "roots": { "listChanged": true },
+      "sampling": {}
+    },
+    "clientInfo": {
+      "name": "ExampleClient",
+      "version": "1.0.0"
+    }
+  }
+}
+
+### 3. Notification d’initialisation
+POST http://{{host}}:{{port}}/mcp/message?sessionId={{sessionId}}
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/initialized"
+}
+
+### 4. Liste des outils disponibles
+POST http://{{host}}:{{port}}/mcp/message?sessionId={{sessionId}}
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/list"
+}
+
+### 5. Appel d’un outil (ex: getAllCompanies)
+POST http://{{host}}:{{port}}/mcp/message?sessionId={{sessionId}}
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "getAllCompanies",
+    "arguments": {}
+  }
+}
+
+### 6. Appel d’un outil avec arguments : getCompanyByName
+POST http://{{host}}:{{port}}/mcp/message?sessionId={{sessionId}}
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "getCompanyByName",
+    "arguments": {
+      "name": "OCP"
+    }
+  },
+  "id": 4
+}
