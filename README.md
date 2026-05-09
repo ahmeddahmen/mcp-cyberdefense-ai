@@ -1,189 +1,178 @@
-# 🤖 mcp-demo-spring-python
+# 🛡️ CyberDefense AI Agent with MCP
 
-## 🧠 Application Agentique avec Spring AI, MCP Protocol, NodeJS, Python et LLMs (OpenAI, Claude, LLaMA)
+> **Projet MPI1 — Faculté des Sciences de Sfax | 2025-2026**  
+> Enseignant : Yassine Masmoudi
 
----
-
-### ❗ Problème à résoudre :
-
-> **"Créer une architecture flexible et extensible d'agents IA capables d'interagir avec des outils externes via le protocole MCP, en multi-langage (Java, NodeJS, Python), pour permettre la résolution intelligente de requêtes complexes."**
+An autonomous AI agent for cyber defense, built with **Spring Boot**, **Spring AI**, **Python MCP Servers**, and **Angular 18**. The agent uses **LLaMA 3.3 70B** (via Groq) to analyze network activity and SSH logs in real time using the **Model Context Protocol (MCP)**.
 
 ---
 
-### 🔍 Description
+## 🎯 Project Objectives
 
-Cette application montre comment :
-
-- Mettre en place des **serveurs MCP** (Spring Boot, NodeJS, Python)
-- Intégrer un **client Spring AI** compatible avec Claude, LLaMA3.2 et OpenAI
-- Créer un **agent intelligent** (`ToolCallbackProvider`, mémoire contextuelle, etc.)
-- Appeler dynamiquement des **tools STDIO**
-- **Tester via Swagger UI**, Postman ou Front Angular/Thymeleaf
+- Understand the foundations of agentic AI systems and their application to cybersecurity
+- Design and implement MCP servers dedicated to cyber defense
+- Connect these servers to an LLM using a Spring AI MCP client
+- Automate surveillance, analysis, and incident response tasks
 
 ---
 
-### ✅ Fonctionnalités principales
+## 🏗️ Architecture
 
-- 📁 **Lecture / écriture fichiers** via `@modelcontextprotocol/server-filesystem`
-- 🔁 **Communication STDIO** entre le client Java et les tools (NodeJS, Python)
-- 🧠 **Utilisation de modèles LLM** en interaction avec des outils réels
-- ✔️ **Test complet** avec Postman et Swagger
-- 🎨 **Intégration UI** (Angular ou Thymeleaf)
-
----
-
-### 🛠️ Stack technique
-
-| Composant | Description |
-|----------|-------------|
-| ![Spring](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg) **Spring Boot / Spring AI** | Agent IA et orchestration |
-| 🧠 **LLMs** | OpenAI (GPT-4), Claude, LLaMA |
-| 🟢 **NodeJS** | Tools MCP (file-system) exécutés via NPX |
-| 🐍 **Python** | Tools MCP exécutés via `uv` |
-| 📦 **MCP Protocol** | Standardisé pour outils multilangages |
-| 📬 **Postman / Swagger** | Test et documentation des endpoints |
-| 🌐 **Angular / Thymeleaf** | Interface utilisateur (UI) |
-
----
-
-### 📂 Structure du projet
-
-<img width="878" height="299" alt="image" src="https://github.com/user-attachments/assets/89f59fec-9575-45af-9518-47a6486d4128" />
-
-
-
----
-
-### 📊 Diagramme de séquences
-
-```mermaid
-sequenceDiagram
-    participant UI as User (Angular/Swagger)
-    participant RestCtrl as REST Controller
-    participant Agent as AI Agent
-    participant LLM as LLM (OpenAI/Claude)
-    participant MCPClient as MCP Client
-    participant ToolNode as NodeJS Tool
-    participant ToolPython as Python Tool
-
-    UI->>RestCtrl: Sends a query
-    RestCtrl->>Agent: Forwards the query
-    Agent->>LLM: Sends prompt + context + tools
-    LLM->>MCPClient: Chooses a tool (Node/Python)
-    MCPClient->>ToolNode: STDIO call (e.g., npx)
-    MCPClient->>ToolPython: STDIO call (e.g., uv)
-    ToolNode-->>MCPClient: JSON response
-    ToolPython-->>MCPClient: JSON response
-    MCPClient-->>Agent: Raw result
-    Agent-->>LLM: Observation
-    LLM-->>Agent: Final answer
-    Agent-->>RestCtrl: Result
-    RestCtrl-->>UI: User response
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Angular Frontend                      │
+│                   localhost:4200                         │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP POST /chat/send
+┌──────────────────────▼──────────────────────────────────┐
+│              Spring Boot MCP Client                      │
+│                  localhost:8066                          │
+│         Spring AI + LLaMA 3.3 via Groq API              │
+└──────────┬───────────────────────────┬───────────────────┘
+           │ stdio (MCP)               │ stdio (MCP)
+┌──────────▼──────────┐   ┌───────────▼──────────────────┐
+│  network_server.py  │   │       log_server.py           │
+│  Network Surveillance│   │      Log Analysis             │
+│  ─────────────────  │   │  ──────────────────────────   │
+│  • scan_ports       │   │  • parse_auth_logs            │
+│  • check_connections│   │  • detect_bruteforce          │
+│  • ping_host        │   │  • get_failed_logins          │
+│  • get_network_stats│   │  • search_log_pattern         │
+└─────────────────────┘   └──────────────────────────────┘
 ```
 
-### 📊 Diagramme de flux du projet
+---
 
-```mermaid
-flowchart TD
-    subgraph UI
-        A[Utilisateur - Swagger / Angular]
-    end
+## 🛠️ Tech Stack
 
-    subgraph API
-        B[API REST Spring - RestController]
-    end
+| Component | Technology |
+|-----------|------------|
+| LLM | LLaMA 3.3 70B via Groq API |
+| MCP Client | Spring Boot 3.5 + Spring AI 1.0 |
+| MCP Servers | Python 3.11 + FastMCP |
+| Frontend | Angular 18 + Bootstrap 5 |
+| Build | Maven + Angular CLI |
 
-    subgraph AI
-        C[Agent IA - Spring AI]
-        D[LLM - OpenAI / Claude / LLaMA]
-    end
+---
 
-    subgraph MCP
-        E[MCP Client - Java]
-    end
+## 📁 Project Structure
 
-    subgraph MCP_SERVERS
-        F[Serveur MCP Node.js Tools: read_file, write_file…]
-        G[Serveur MCP Python Tools:  get_employee_info]
-        H[Serveur MCP Java Tools: stock]
-    end
-
-    %% Requête utilisateur jusqu’à la sélection du tool
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    C --> E
-
-    %% Appel du bon serveur selon le tool
-    E --> F
-    E --> G
-    E --> H
-
-    %% Retour du résultat
-    F --> E
-    G --> E
-    H --> E
-    E --> C
-    C --> B
-    B --> A
 ```
-## 🔍 Résumé du workflow
-👤 Utilisateur : Fait une requête via Swagger ou Angular.
-
-🌐 API REST Spring : Reçoit et transmet la requête à l'agent IA.
-
-🧠 Agent IA (Spring AI) : Analyse la demande et interroge le LLM si nécessaire.
-
-🧠 LLM : Génère l'appel à un outil parmi ceux des serveurs MCP.
-
-🔁 MCP Client (Java) : Transmet la commande au bon serveur MCP selon le choix du LLM.
-
-## 🧰 Serveurs MCP disponibles
-### ☕ Serveur MCP Java :
-Company, Stock
-
-### 🐍 Serveur MCP Python :
-get_employee_info
-
-### 🟢 Serveur MCP Node.js (outils filesystem) :
-read_file, write_file, ...
-
-### 🔄 Retour de réponse
-📦 Le serveur MCP exécute l’outil et renvoie un résultat JSON.
-
-📬 Le MCP Client reçoit la réponse et la transmet à l'agent IA.
-
-💡 Le LLM complète la réponse avec le contexte.
-
-📤 L'API Spring retourne la réponse finale à l'utilisateur.
-
-
-# 🚀 Démarrage rapide
-
-1. Clone du projet  
-2. Configure `.env` avec ta clé OpenAI  
-3. Lance le backend : `Spring Boot`  
-4. Lance un outil via `npx` ou `uv`  
-5. Teste via Swagger (`http://localhost:8066/swagger-ui.html`)
-
-## 🧪 Exemple de requête
-
-## Réponse
-```json
-POST /chat
-{
-  "query": "Crée un fichier nommé test.md avec le contenu Bonjour"
-}
-
-{
-  "result": "Fichier test.md créé avec succès dans le répertoire autorisé"
-}
+mcp-cyberdefense-ai/
+├── mcp-client/                    # Spring Boot MCP Client
+│   └── src/main/java/com/elfn/mcpclient/
+│       ├── agents/AIAgent.java    # AI Agent with tool callbacks
+│       ├── controllers/           # REST + Web controllers
+│       ├── config/WebConfig.java  # Async timeout config
+│       └── McpClientApplication.java
+├── mcp-servers/                   # Python MCP Servers
+│   ├── network_server.py          # Network surveillance tools
+│   ├── log_server.py              # Log analysis tools
+│   └── requirements.txt
+├── chat-ai-frontend/              # Angular 18 Frontend
+│   └── src/app/
+│       ├── chat/                  # Chat component (dark theme)
+│       └── services/chat.service.ts
+└── openclaw_config.json           # MCP client configuration
 ```
 
-# 🌐 Test de l'interface (Angular)
+---
 
-<img width="1006" height="554" alt="image" src="https://github.com/user-attachments/assets/7e4ea767-a72c-4a95-bca6-9e818a90df21" />
+## 🚀 Getting Started
 
-<img width="1004" height="841" alt="image" src="https://github.com/user-attachments/assets/665d327e-6a9a-4ba1-a6f0-1ec4b32ac0ee" />
+### Prerequisites
 
+- Java 17+
+- Python 3.11+
+- Node.js 18+ & npm
+- A [Groq API key](https://console.groq.com/keys) (free)
+
+### 1. Install Python dependencies
+
+```bash
+cd mcp-servers
+pip install -r requirements.txt
+```
+
+### 2. Configure the API key
+
+Edit `mcp-client/src/main/resources/application.properties`:
+
+```properties
+spring.ai.openai.api-key=YOUR_GROQ_API_KEY
+spring.ai.openai.base-url=https://api.groq.com/openai
+spring.ai.openai.chat.options.model=llama-3.3-70b-versatile
+```
+
+### 3. Start the backend
+
+```bash
+cd mcp-client
+./mvnw spring-boot:run   # Linux/Mac
+.\mvnw.cmd spring-boot:run  # Windows
+```
+
+### 4. Start the frontend
+
+```bash
+cd chat-ai-frontend
+npm install
+npm start
+```
+
+### 5. Open the app
+
+Navigate to **http://localhost:4200**
+
+---
+
+## 🔧 MCP Tools
+
+### 🌐 Network Surveillance (`network_server.py`)
+
+| Tool | Description |
+|------|-------------|
+| `scan_ports(host, port_range)` | Scan open ports on a target host (max 50 ports) |
+| `check_connections()` | List active connections and detect suspicious ones |
+| `ping_host(host)` | Check host availability and response time |
+| `get_network_stats()` | Get network I/O statistics |
+
+### 📋 Log Analysis (`log_server.py`)
+
+| Tool | Description |
+|------|-------------|
+| `parse_auth_logs(n_lines)` | Parse SSH auth logs and detect failures |
+| `detect_bruteforce(threshold)` | Identify IPs exceeding failed login threshold |
+| `get_failed_logins()` | List targeted usernames and source IPs |
+| `search_log_pattern(pattern, logfile)` | Regex search in log files |
+
+---
+
+## 💬 Usage Scenarios
+
+Once the app is running, use the quick action buttons or type naturally:
+
+- 🔍 **"Analyse les logs SSH et détecte les tentatives de force brute"**
+- 🌐 **"Scanne les ports de localhost et liste les ports ouverts"**
+- 🔗 **"Y a-t-il des connexions réseau suspectes actives ?"**
+- 📊 **"Génère un rapport de sécurité résumant l'état actuel du système"**
+
+---
+
+## ⚠️ Notes
+
+- On **Windows**, `/var/log/auth.log` is not available — the log server uses realistic simulated SSH logs
+- Groq free tier: **100,000 tokens/day** — wait between requests to avoid rate limits
+- Port scanning is limited to **50 ports max** to avoid timeouts
+
+---
+
+## 📄 License
+
+This project was created for educational purposes as part of the MPI1 scripting course at Faculté des Sciences de Sfax.
+
+---
+
+## 👤 Author
+
+**Ahmed Dahmen** — [@ahmeddahmen](https://github.com/ahmeddahmen)
